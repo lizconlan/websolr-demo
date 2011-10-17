@@ -3,6 +3,8 @@ require 'rest-client'
 require 'date'
 require 'time'
 
+require 'lib/indexer'
+
 require 'models/hansard_page'
 require 'models/hansard_member'
 

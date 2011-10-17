@@ -1,17 +1,12 @@
-class Snippet < ActiveRecord::Base
-  serialize :members, Array
+require 'solr_mapper'
+include SolrMapper
+
+class Snippet
+  include SolrMapper::SolrDocument
   
-  searchable do
-    string  :title
-    text    :text, :stored => true
-    string  :url
-    string  :part
-    string  :volume
-    string  :columns
-    string  :chair
-    string  :section
-    string  :house
-    string  :members, :multiple => true
-    time    :published_at
+  if ENV['WEBSOLR_URL']
+    bind_service_url(ENV['WEBSOLR_URL'])
+  else
+    bind_service_url(YAML::load(File.read("config/websolr.yml"))[:websolr_url])
   end
 end
