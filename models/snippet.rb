@@ -1,12 +1,24 @@
-require 'solr_mapper'
-include SolrMapper
+require 'sunspot'
 
 class Snippet
-  include SolrMapper::SolrDocument
+  attr_accessor :title, :description, :_id
   
-  if ENV['WEBSOLR_URL']
-    bind_service_url(ENV['WEBSOLR_URL'])
-  else
-    bind_service_url(YAML::load(File.read("config/websolr.yml"))[:websolr_url])
+  Sunspot.setup(Snippet) do
+    text :title, :description, :stored => true
   end
 end
+
+class InstanceAdapter < Sunspot::Adapters::InstanceAdapter
+   def id
+     nil
+   end
+ end
+
+ class DataAccessor < Sunspot::Adapters::DataAccessor
+   def load(id)
+     nil
+   end
+ end
+ 
+Sunspot::Adapters::DataAccessor.register(DataAccessor, Snippet)
+Sunspot::Adapters::InstanceAdapter.register(InstanceAdapter, Snippet)
