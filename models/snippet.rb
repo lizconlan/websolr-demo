@@ -1,16 +1,30 @@
 require 'sunspot'
 
 class Snippet
-  attr_accessor :title, :description, :_id
-  
+  attr_reader :id
+  attr_accessor :title, :text, :volume, :columns, :part, :members, :chair, :subject, :url, :house, :section, :published_at
+    
   Sunspot.setup(Snippet) do
-    text :title, :description, :stored => true
+    string :title, :stored => true
+    string :volume, :part, :stored => true
+    text :members, :stored => true
+    text :text, :stored => true
+    string :chair, :stored => true
+    string :subject, :stored => true
+    string :url, :stored => true
+    string :house, :stored => true
+    string :section, :stored => true
+    string :published_at, :stored => true
+  end
+  
+  def initialize(id)
+    @id = id
   end
 end
 
 class InstanceAdapter < Sunspot::Adapters::InstanceAdapter
    def id
-     nil
+     @instance.id
    end
  end
 

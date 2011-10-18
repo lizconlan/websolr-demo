@@ -1,24 +1,34 @@
 require 'yaml'
 require 'time'
 
-require 'models/snippet'
 require 'sunspot'
+require 'models/snippet'
 
 class Indexer
-  attr_reader :conn
-  
   def initialize
-    unless ENV['WEBSOLR_URL']
-      ENV['WEBSOLR_URL'] = YAML::load(File.read("config/websolr.yml"))[:websolr_url]
+    if ENV['WEBSOLR_URL']
+      url = ENV['WEBSOLR_URL']
+    else
+      url = YAML::load(File.read("config/websolr.yml"))[:websolr_url]
     end
+    Sunspot.config.solr.url = url
+  end
+  
+  def add_document(seg_id, doc, text, categories, index=nil)
+    snippet = Snippet.new(seg_id)
     
-    Sunspot.setup(Snippet) do
-      text :title, :description, :stored => true
-      string :author_name
-      integer :blog_id
-      integer :category_ids
-      float :average_rating, :using => :ratings_average
-      time :published_at
-    end
+    snippet.text = text
+    snippet.title = doc[:title]
+    snippet.volume = doc[:volume]
+    snippet.members = doc[:members] #could be done better
+    snippet.chair = doc[:chair]
+    snippet.subject = doc[:subject]
+    snippet.url = doc[:url]
+    snippet.house = doc[:house]
+    snippet.section = doc[:section]
+    snippet.published_at = doc[:timestamp] #shouldn't just store a timestamp
+    
+    Sunspot.index(snippet)
+    Sunspot.commit
   end
 end
