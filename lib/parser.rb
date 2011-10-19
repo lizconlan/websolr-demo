@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'nokogiri'
 require 'rest-client'
 require 'date'
