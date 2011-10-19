@@ -1,0 +1,18 @@
+%html
+  %head
+    %title Search
+  %body
+    %h1 Search
+    %form
+      %input{:name => "q"}
+    - if @q
+      - @docs.each do |doc|
+        %p= 'Title: ' + doc['title_ss']
+        %p= 'Section: ' + doc['section_ss']
+        %p= 'House: ' + doc['house_ss']
+        %p= 'Chair: ' + doc['chair_ss']
+        %p= 'Subject: ' + doc['subject_ss']
+        %p= 'URL: ' + doc['url_ss']
+        - doc['members_texts'][0].split('|').each do |member|
+          %li= member
+        %hr
