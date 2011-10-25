@@ -9,12 +9,18 @@
       %input{:type => "Submit", :value => "Search"}
     - if @q
       #results
+        - if @section_facets
+          %ul.sections
+          - @section_facets.each do |section|
+            %li= "#{section[:name]} (#{section[:count]})"
+               
         - @docs.each do |doc|
           %div.result
             %p.title= 'Title: ' + doc['title_ss']
             %p.section= 'Section: ' + doc['section_ss']
             %p.house= 'House: ' + doc['house_ss']
-            %p.chair= 'Chair: ' + doc['chair_ss']
+            - if doc['chair_ss']
+              %p.chair= 'Chair: ' + doc['chair_ss']
             %p.subject= 'Subject: ' + doc['subject_ss']
             - url = URI.parse(doc['url_ss'])
             %p.url.host= 'Host: ' + url.host
