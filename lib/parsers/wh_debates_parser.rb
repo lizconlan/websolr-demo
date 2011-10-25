@@ -108,7 +108,12 @@ class WHDebatesParser < Parser
             member_name = ""
           end
           
-          text = node.text.gsub("\n", "").gsub(column_desc, "").squeeze(" ").strip
+          text = node.content.gsub("\n", "").gsub(column_desc, "").squeeze(" ").strip
+          
+          if text[text.length-13..text.length-2] == "in the Chair"
+            @chair = text[1..text.length-15]
+          end
+          
           #ignore column heading text
           unless text =~ /^\d+ [A-Z][a-z]+ \d{4} : Column (\d+(?:WH)?(?:WS)?(?:P)?(?:W)?)(?:-continued)?$/
             #check if this is a new contrib
