@@ -2,19 +2,21 @@
   %head
     %title Search
     %style 
-      body {width:42em;margin:4em auto;}	
+      body {width:42em;margin:4em auto;}
   %body
     %form
       %input{:name => "q", :value => @q}
       %input{:type => "Submit", :value => "Search"}
     - if @q
-      - @docs.each do |doc|
-        %p= 'Title: ' + doc['title_ss']
-        %p= 'Section: ' + doc['section_ss']
-        %p= 'House: ' + doc['house_ss']
-        %p= 'Chair: ' + doc['chair_ss']
-        %p= 'Subject: ' + doc['subject_ss']
-        %p= 'URL: ' + doc['url_ss']
-        - doc['members_texts'][0].split('|').each do |member|
-          %li= member
-        %hr
+      #results
+        - @docs.each do |doc|
+          %div.result
+            %p.title= 'Title: ' + doc['title_ss']
+            %p.section= 'Section: ' + doc['section_ss']
+            %p.house= 'House: ' + doc['house_ss']
+            %p.chair= 'Chair: ' + doc['chair_ss']
+            %p.subject= 'Subject: ' + doc['subject_ss']
+            %p.url= 'URL: ' + doc['url_ss']
+            %ul.members
+              - doc['members_texts'].each do |member|
+                %li.member= member
