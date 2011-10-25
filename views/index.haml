@@ -1,10 +1,12 @@
 %html
   %head
     %title Search
+    %style 
+      body {width:42em;margin:4em auto;}	
   %body
-    %h1 Search
     %form
-      %input{:name => "q"}
+      %input{:name => "q", :value => @q}
+      %input{:type => "Submit", :value => "Search"}
     - if @q
       - @docs.each do |doc|
         %p= 'Title: ' + doc['title_ss']
