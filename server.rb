@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'json'
+require 'uri'
 require 'open-uri'
 
 WEBSOLR_URL = ENV['WEBSOLR_URL'] ||  YAML::load(File.read("config/websolr.yml"))[:websolr_url]

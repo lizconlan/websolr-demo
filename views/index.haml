@@ -16,7 +16,10 @@
             %p.house= 'House: ' + doc['house_ss']
             %p.chair= 'Chair: ' + doc['chair_ss']
             %p.subject= 'Subject: ' + doc['subject_ss']
-            %p.url= 'URL: ' + doc['url_ss']
+            - url = URI.parse(doc['url_ss'])
+            %p.url.host= 'Host: ' + url.host
+            %p.url.path= 'Path: ' + url.path
+            %p.url.fragment= 'Fragment: ' + url.fragment
             %ul.members
               - doc['members_texts'].each do |member|
                 %li.member= member
