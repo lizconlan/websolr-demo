@@ -184,7 +184,7 @@ class WMSParser < Parser
          :url => @segment_link,
          :house => house,
          :section => "Written Ministerial Statements",
-         :timestamp => Time.parse(date).to_i
+         :date => date
         }
             
         categories = {"house" => house, "section" => section}

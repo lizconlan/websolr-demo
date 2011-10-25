@@ -14,7 +14,7 @@ class Snippet
     string :url, :stored => true
     string :house, :stored => true
     string :section, :stored => true
-    string :published_at, :stored => true
+    time :published_at, :stored => true
   end
   
   def initialize(id)

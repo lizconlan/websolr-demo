@@ -348,7 +348,7 @@ class DebatesParser < Parser
          :url => @segment_link,
          :house => house,
          :section => section,
-         :timestamp => Time.parse(date).to_i
+         :date => date
         }
         
         if @department != ""

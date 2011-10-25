@@ -15,13 +15,13 @@ class Indexer
     snippet.text = text
     snippet.title = doc[:title]
     snippet.volume = doc[:volume]
-    snippet.members = doc[:members] #could be done better
+    snippet.members = doc[:members]
     snippet.chair = doc[:chair]
     snippet.subject = doc[:subject]
     snippet.url = doc[:url]
     snippet.house = doc[:house]
     snippet.section = doc[:section]
-    snippet.published_at = doc[:timestamp] #shouldn't just store a timestamp
+    snippet.published_at = doc[:date]
     
     Sunspot.index(snippet)
     Sunspot.commit
