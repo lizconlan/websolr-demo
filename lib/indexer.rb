@@ -6,12 +6,7 @@ require 'models/snippet'
 
 class Indexer
   def initialize
-    if ENV['WEBSOLR_URL']
-      url = ENV['WEBSOLR_URL']
-    else
-      url = YAML::load(File.read("config/websolr.yml"))[:websolr_url]
-    end
-    Sunspot.config.solr.url = url
+    Sunspot.config.solr.url = ENV['WEBSOLR_URL'] || YAML::load(File.read("config/websolr.yml"))[:websolr_url]
   end
   
   def add_document(seg_id, doc, text, categories, index=nil)
