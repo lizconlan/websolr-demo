@@ -180,7 +180,7 @@ class WHDebatesParser < Parser
          :url => @segment_link,
          :house => house,
          :section => section,
-         :date => date
+         :date => Time.parse("#{@date}T00:00:01Z")
         }
             
         categories = {"house" => house, "section" => section}
