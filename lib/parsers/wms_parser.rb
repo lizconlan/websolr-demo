@@ -179,7 +179,7 @@ class WMSParser < Parser
          :columns => column_text,
          :part => sanitize_text(page.part.to_s),
          :department => @department,
-         :members => names.first,
+         :members => [names.first],
          :subject => @subject,
          :url => @segment_link,
          :house => house,

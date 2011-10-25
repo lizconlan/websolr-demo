@@ -343,7 +343,7 @@ class DebatesParser < Parser
          :volume => page.volume,
          :columns => column_text,
          :part => sanitize_text(page.part.to_s),
-         :members => "| #{names.join(" | ")} |".squeeze(" "),
+         :members => names,
          :subject => subject,
          :url => @segment_link,
          :house => house,
