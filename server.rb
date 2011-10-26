@@ -1,6 +1,5 @@
 require 'sinatra'
 require 'json'
-require 'uri'
 require 'cgi'
 require 'open-uri'
 

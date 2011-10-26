@@ -3,6 +3,9 @@
     %title Search
     %style 
       body {width:42em;margin:4em auto;}
+      div.result {border:1pt solid gray;padding:1em 2em;margin:1em 0;box-shadow: 0.3em 0.3em #CCC;}
+      div.result p.title {font-weight:bold;}
+      div.result p.url {font-size:small;}
   %body
     %form
       %input{:name => "q", :value => @q}
@@ -20,23 +23,19 @@
                 %a{:href => "?q=#{params[:q]}&section=#{section[:name]}"}= "#{section[:name]} (#{section[:count]})"
                
         - @docs.each do |doc|
-          %div.result
-            %p.title= 'Title: ' + doc['title_ss']
+          .result
+            %p.title= doc['title_ss']
+            %p.url= doc['url_ss']
             %p.section= 'Section: ' + doc['section_ss']
             %p.house= 'House: ' + doc['house_ss']
             - if doc['chair_ss']
               %p.chair= 'Chair: ' + doc['chair_ss']
-            %p.subject= 'Subject: ' + doc['subject_ss']
             %p.ref
               ='Fragment ref: vol ' + doc['volume_ss']
               - if doc['columns_ss']
                 =' cc' + doc['columns_ss']
               -if doc['part_ss']
                 =' (Part ' + doc['part_ss'] + ')'
-            - url = URI.parse(doc['url_ss'])
-            %p.url.host= 'Host: ' + url.host
-            %p.url.path= 'Path: ' + url.path
-            %p.url.fragment= 'Fragment: ' + url.fragment
             %ul.members
               - doc['members_texts'].each do |member|
                 %li.member= member
