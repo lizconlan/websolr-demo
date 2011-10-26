@@ -9,10 +9,15 @@
       %input{:type => "Submit", :value => "Search"}
     - if @q
       #results
-        - if @section_facets
-          %ul.sections
-          - @section_facets.each do |section|
-            %li= "#{section[:name]} (#{section[:count]})"
+        - if @section_filter
+          %b
+            Showing results from #{@section_filter}
+        - else
+          - if @section_facets and @section_facets.length > 1
+            %ul.sections
+            - @section_facets.each do |section|
+              %li
+                %a{:href => "?q=#{params[:q]}&section=#{section[:name]}"}= "#{section[:name]} (#{section[:count]})"
                
         - @docs.each do |doc|
           %div.result

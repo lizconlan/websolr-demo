@@ -22,10 +22,18 @@ helpers do
 end
 
 get '/' do
-    @q = params[:q]
+  @q = params[:q]
+	@section_filter = params[:section]
+	
 	if @q
 	  # cache_control :public, :max_age => 600
-	  buffer = open(WEBSOLR_URL + "/select/?q=text_texts:#{CGI::escape(@q)}&facet=true&facet.mincount=1&facet.field=section_ss&wt=json&indent=true", "UserAgent" => "Ruby-ExpandLink").read
+	  url = WEBSOLR_URL + "/select/?q=text_texts:#{CGI::escape(@q)}&facet=true&facet.mincount=1&facet.field=section_ss&wt=json&indent=true"
+	  
+	  if @section_filter
+	    url = "#{url}&fq=section_ss:%22#{CGI::escape(@section_filter)}%22"
+	  end
+	  
+	  buffer = open(url, "UserAgent" => "Ruby-ExpandLink").read
       result = JSON.parse(buffer)
       @docs = result['response']['docs']
       @section_facets = facets_to_hash_array(result['facet_counts']['facet_fields']['section_ss'])
