@@ -26,8 +26,14 @@ get '/' do
 	@section_filter = params[:section]
 	
 	if @q
+	  if @q.strip.gsub("+", " ").split(" ").count > 1
+	    query = ("\"#{@q}\"").squeeze('"')
+	  else
+	    query = @q
+	  end
+	  
 	  # cache_control :public, :max_age => 600
-	  url = WEBSOLR_URL + "/select/?q=text_texts:#{CGI::escape(@q)}&facet=true&facet.mincount=1&facet.field=section_ss&wt=json&indent=true"
+	  url = WEBSOLR_URL + "/select/?q=text_texts:#{CGI::escape(query)}&facet=true&facet.mincount=1&facet.field=section_ss&wt=json&indent=true"
 	  
 	  if @section_filter
 	    url = "#{url}&fq=section_ss:%22#{CGI::escape(@section_filter)}%22"
