@@ -12,6 +12,7 @@
       %input{:type => "Submit", :value => "Search"}
     - if @q
       #results
+        ="Showing #{page_info} of #{@found} results for <b>#{h(@q)}</b>"
         - if @section_filter
           %b
             Showing results from #{@section_filter}
