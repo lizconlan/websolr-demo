@@ -50,8 +50,7 @@ get '/' do
 	    query = @q
 	  end
 	  
-	  # cache_control :public, :max_age => 600
-	  url = WEBSOLR_URL + "/select/?q=text_texts:#{CGI::escape(query)}&facet=true&facet.mincount=1&facet.field=section_ss&wt=json&indent=true"
+	  url = WEBSOLR_URL + "/select/?q=text_texts:#{CGI::escape(query)}&facet=true&facet.mincount=1&facet.field=section_ss&wt=json"
 	  
 	  if @section_filter
 	    url = "#{url}&fq=section_ss:%22#{CGI::escape(@section_filter)}%22"
@@ -61,7 +60,7 @@ get '/' do
 	    url = "#{url}&start=#{(@page.to_i-1)*10}"
 	  end
 	  
-	  buffer = open(url, "UserAgent" => "Ruby-ExpandLink").read
+	  buffer = open(url, "UserAgent" => "Ruby-UK-Parliament").read
       result = JSON.parse(buffer)
       @found = result['response']['numFound']
       @docs = result['response']['docs']
