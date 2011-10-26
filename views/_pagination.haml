@@ -1,0 +1,17 @@
+- if @found > 0
+  .pagination
+    - if @page > 1
+      - if params[:p]
+        - qs =  "?" + request.query_string.gsub("&p=#{params[:p]}", "&p=#{@page-1}")
+      - else
+        - qs =  "?#{request.query_string}&p=#{@page-1}"
+      
+      %a{:href => qs, :rel => "Previous"} &larr; Previous
+  
+    - if @found > (@page.to_i-1)*10+10
+      - if params[:p]
+        - qs =  "?" + request.query_string.gsub("&p=#{params[:p]}", "&p=#{@page+1}")
+      - else
+        - qs =  "?#{request.query_string}&p=#{@page+1}"
+      
+      %a{:href => qs, :rel => "Next", :class => "right_link"} Next &rarr;

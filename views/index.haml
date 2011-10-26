@@ -42,3 +42,6 @@
             %ul.members
               - doc['members_texts'].each do |member|
                 %li.member= member
+                
+    - if @q
+      =haml :_pagination

@@ -18,7 +18,7 @@ helpers do
     end
     info
   end
-
+  
   def facets_to_hash_array(facets)
     hash_array = []
     name = ""
