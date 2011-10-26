@@ -15,6 +15,8 @@ class Indexer
     snippet.text = text
     snippet.title = doc[:title]
     snippet.volume = doc[:volume]
+    snippet.columns = doc[:columns]
+    snippet.part = doc[:part]
     snippet.members = doc[:members]
     snippet.chair = doc[:chair]
     snippet.subject = doc[:subject]

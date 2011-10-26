@@ -6,7 +6,9 @@ class Snippet
     
   Sunspot.setup(Snippet) do
     string :title, :stored => true
-    string :volume, :part, :stored => true
+    string :volume, :stored => true
+    string :part, :stored => true
+    string :columns, :stored => true
     text :members, :stored => true
     text :text, :stored => true
     string :chair, :stored => true
