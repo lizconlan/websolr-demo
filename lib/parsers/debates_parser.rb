@@ -12,7 +12,7 @@ class DebatesParser < Parser
     super(section)
   end
   
-  def parse_pages
+  def init_vars
     @column = ""
     @page = 0
     @count = 0
@@ -34,28 +34,14 @@ class DebatesParser < Parser
     @petitions = []
     
     @subsection = ""
-    
-    @indexer = Indexer.new()
-    
-    unless link_to_first_page
-      warn "No #{section} data available for this date"
-    else
-      page = HansardPage.new(link_to_first_page)
-      parse_page(page)
-      while page.next_url
-        page = HansardPage.new(page.next_url)
-        parse_page(page)
-      end
-    
-      #flush the buffer
-      unless @snippet.empty? or @snippet.join("").length == 0
-        store_debate(page)
-        @snippet = []
-        @questions = []
-        @petitions = []
-      end
-    end
   end
+  
+  def reset_vars
+    @snippet = []
+    @questions = []
+    @petitions = []
+  end
+  
   
   private
     def parse_node(node, page)
