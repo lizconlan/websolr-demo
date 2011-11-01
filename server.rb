@@ -50,7 +50,7 @@ get '/' do
 	    query = @q
 	  end
 	  
-	  url = WEBSOLR_URL + "/select/?q=text_texts:#{CGI::escape(query)}&facet=true&facet.mincount=1&facet.field=section_ss&wt=json&hl=true&hl.fl=text_texts"
+	  url = WEBSOLR_URL + "/select/?q=text_texts:#{CGI::escape(query)}&facet=true&facet.mincount=1&facet.field=section_ss&wt=json&hl.snippets=3&hl.fragsize=200&hl=true&hl.fl=text_texts"
 	  
 	  if @section_filter
 	    url = "#{url}&fq=section_ss:%22#{CGI::escape(@section_filter)}%22"
@@ -60,11 +60,11 @@ get '/' do
 	    url = "#{url}&start=#{(@page.to_i-1)*10}"
 	  end
 	
-	  # pick up highlighting results
-	  buffer = open(url, "UserAgent" => "Ruby-UK-Parliament").read
+	  buffer = open(url).read
       result = JSON.parse(buffer)
       @found = result['response']['numFound']
       @docs = result['response']['docs']
+      @highlights = result['highlighting']
       @section_facets = facets_to_hash_array(result['facet_counts']['facet_fields']['section_ss'])
     end
     
