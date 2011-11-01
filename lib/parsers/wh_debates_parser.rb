@@ -40,22 +40,7 @@ class WHDebatesParser < Parser
     def parse_node(node, page)
       case node.name
         when "a"
-          @last_link = node.attr("name") if node.attr("class") == "anchor"
-          if node.attr("class") == "anchor-column"
-            if @start_column == ""
-              @start_column = node.attr("name").gsub("column_", "")
-            else
-              @end_column = node.attr("name").gsub("column_", "")
-            end
-          elsif node.attr("name") =~ /column_(.*)/  #older page format
-            if @start_column == ""
-              @start_column = node.attr("name").gsub("column_", "")
-            else
-              @end_column = node.attr("name").gsub("column_", "")
-            end
-          elsif node.attr("name") =~ /^\d*$/ #older page format
-            @last_link = node.attr("name")
-          end
+          process_links_and_columns(node)
         when "h3"
           unless @snippet.empty? or @snippet.join("").length == 0
             store_debate(page)
@@ -176,7 +161,7 @@ class WHDebatesParser < Parser
             
         categories = {"house" => house, "section" => section}
       
-        @indexer.add_document(segment_id, doc, @snippet.join(" "), categories, "idx")
+        @indexer.add_document(segment_id, doc, @snippet.join(" "))
 
         @start_column = @end_column if @end_column != ""
       
