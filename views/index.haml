@@ -3,7 +3,7 @@
     %title Search
     %style 
       body {width:60em;margin:6em auto;font-family:'Helvetica Neue',Helvetica;}
-      div.result {padding-bottom:0.5em;}
+      div.result {padding-top:0.5em;}
       div.result .section {font-size:1.2em;color:gray;}
       div.result .title {font-size:1.6em;display:block;}
       div.result .ref a {font-size:1.2em;text-decoration:none;}
@@ -14,7 +14,8 @@
       %input{:type => "Submit", :value => "Search"}
     - if @q
       #results
-        = "Showing #{page_info} of #{@found} results"
+        - if @found > 10
+          = "Showing #{page_info} of #{@found} results"
         - if @section_filter
           %b
             Showing results from #{@section_filter}
@@ -23,23 +24,23 @@
             %ul.sections
               - @section_facets.each do |section|
                 %li.section
-                  %a{:href => "?q=#{params[:q]}&section=#{section[:name]}"}= "#{section[:name]} (#{section[:count]})"
+                  %a{:href => "?q=#{params[:q]}&section=#{section[:name]}"}= "#{section[:name]} &mdash; #{section[:count]}"
                
         - @docs.each do |doc|
           .result
             - house_initial = doc['house_ss'][0,1]
             %span.title= doc['subject_ss']
             %span.ref
-              %a{:href => doc['url_ss']}
-                %span.house= "H#{house_initial} " 
-                = "Deb vol " + doc['volume_ss']
+              %a{:href => doc['url_ss'], :title => doc['url_ss']}
+                %span.house= "H#{house_initial} Deb vol " + doc['volume_ss']
                 - if doc['columns_ss']
                   =' cc' + doc['columns_ss']
-                -if doc['part_ss']
+                - if doc['part_ss']
                   =' (Part ' + doc['part_ss'] + ')'
             %span.section= doc['section_ss']
             - if doc['chair_ss']
               %p.chair= 'Chair: ' + doc['chair_ss']
+            %blockquote.text= doc['text_texts'].to_s[0,256] + ' &hellip;'
             
             %ul.members
               - doc['members_texts'].each do |member|

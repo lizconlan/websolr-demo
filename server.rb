@@ -50,7 +50,7 @@ get '/' do
 	    query = @q
 	  end
 	  
-	  url = WEBSOLR_URL + "/select/?q=text_texts:#{CGI::escape(query)}&facet=true&facet.mincount=1&facet.field=section_ss&wt=json"
+	  url = WEBSOLR_URL + "/select/?q=text_texts:#{CGI::escape(query)}&facet=true&facet.mincount=1&facet.field=section_ss&wt=json&hl=true&hl.fl=text_texts"
 	  
 	  if @section_filter
 	    url = "#{url}&fq=section_ss:%22#{CGI::escape(@section_filter)}%22"
@@ -59,7 +59,8 @@ get '/' do
 	  if @page > 1
 	    url = "#{url}&start=#{(@page.to_i-1)*10}"
 	  end
-	  
+	
+	  # pick up highlighting results
 	  buffer = open(url, "UserAgent" => "Ruby-UK-Parliament").read
       result = JSON.parse(buffer)
       @found = result['response']['numFound']
