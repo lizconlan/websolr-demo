@@ -9,7 +9,7 @@ class Indexer
     Sunspot.config.solr.url = ENV['WEBSOLR_URL'] || YAML::load(File.read("config/websolr.yml"))[:websolr_url]
   end
   
-  def add_document(seg_id, doc, text, categories, index=nil)
+  def add_document(seg_id, doc, text)
     snippet = Snippet.new(seg_id)
     
     snippet.text = text
