@@ -1,13 +1,17 @@
 %html
   %head
-    %title Search
+    %title 
+      - unless @q
+        Hansard Search
+      - else
+        = @q + ' (Hansard Search)'
     %style 
       body {width:42em;margin-left:10em;margin-top:4em;margin-bottom:4em;font-family:Helvetica,sans-serif;}
       div.result {padding:0.75em 0;line-height:140%;}
       div.result .section {color:gray;}
       div.result .chair {color:gray;}
       div.result .ref {color:gray;}
-      div.result .subject {display:block;text-decoration:none;}
+      div.result .subject {display:block;}
       div.result blockquote.text {margin:0;}
       div.result .nav {color:green;display:block;}
       blockquote.text em {font-weight:bold;font-style:normal;}

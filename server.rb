@@ -59,13 +59,17 @@ get '/' do
 	  if @page > 1
 	    url = "#{url}&start=#{(@page.to_i-1)*10}"
 	  end
-	
-	  buffer = open(url).read
-      result = JSON.parse(buffer)
-      @found = result['response']['numFound']
-      @docs = result['response']['docs']
-      @highlights = result['highlighting']
-      @section_facets = facets_to_hash_array(result['facet_counts']['facet_fields']['section_ss'])
+	  
+	  unless CGI::escape(query).empty?
+	    buffer = open(url).read
+        result = JSON.parse(buffer)
+        @found = result['response']['numFound']
+        @docs = result['response']['docs']
+        @highlights = result['highlighting']
+        @section_facets = facets_to_hash_array(result['facet_counts']['facet_fields']['section_ss'])
+      else
+        redirect to('/')
+      end
     end
     
 	haml :index
