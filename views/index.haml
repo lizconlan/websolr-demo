@@ -2,8 +2,8 @@
   %head
     %title Search
     %style 
-      body {width:42em;margin:6em auto;font-family:Helvetica,sans-serif;}
-      div.result {padding-top:0.5em;line-height:1.24;}
+      body {width:42em;margin-left:10em;margin-top:4em;margin-bottom:4em;font-family:Helvetica,sans-serif;}
+      div.result {padding:0.75em 0;line-height:140%;}
       div.result .section {color:gray;}
       div.result .chair {color:gray;}
       div.result .ref {color:gray;}
@@ -33,25 +33,24 @@
             %span.subject
               %a{:href => doc['url_ss'], :title => doc['url_ss']}
                 = doc['subject_ss']
-            %span.url=doc['url_ss']
-            %span.section= doc['section_ss']
-            - if doc['chair_ss']
-              %span.chair= '- Chair: ' + doc['chair_ss']
+            %span.url= doc['house_ss'] + ' Hansard &rsaquo; ' + doc['published_at_ds'] + ' &rsaquo; ' + doc['section_ss']
             %span.ref
-              %span.house= "- H" + doc['house_ss'][0,1] + " Deb vol " + doc['volume_ss']
+              %span.house= "H" + doc['house_ss'][0,1] + " Deb vol " + doc['volume_ss']
               - if doc['columns_ss']
                 =' cc' + doc['columns_ss']
               - if doc['part_ss']
                 =' (Part ' + doc['part_ss'] + ')'
+            - if doc['chair_ss']
+              %span.chair= ' - Chair: ' + doc['chair_ss']
             
             %blockquote.text
-              &hellip;
               = @highlights[doc['id']]['text_texts'].join(" &hellip; ")
               &hellip;
             
-            %ul.members
-              - doc['members_texts'].each do |member|
-                %li.member= member
+            - if doc['members_text']
+              %ul.members
+                - doc['members_texts'].each do |member|
+                  %li.member= member
                 
     - if @q
       =haml :_pagination
