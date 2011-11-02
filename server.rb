@@ -9,10 +9,11 @@ helpers do
   include Rack::Utils
   alias_method :h, :escape_html
   
-  def url_segments_line(house, section, date, url, separator="&rsaquo;")
+  def url_segments_line(house, section, date, url, separator=" &rsaquo; ")
     parse_date = Date.parse(date)
     url_parts = url.split("/")
     house_text = "#{house} Hansard"
+    house_link = "http://www.parliament.uk/business/publications/hansard/#{house.downcase}/"
     date_text = parse_date.strftime("%d %b %Y")
     
     date_link = "http://www.parliament.uk/business/publications/hansard/#{house.downcase()}/by-date/?d=#{parse_date.day}&m=#{parse_date.month}&y=#{parse_date.year}"
@@ -23,7 +24,11 @@ helpers do
     end
     section_link = "#{url_parts[0..url_parts.length-2].join("/")}/#{section_end}"
 
-    "#{house_text} #{separator} <a href=\"#{date_link}\">#{date_text}</a> #{separator} <a href=\"#{section_link}\">#{section}</a>"
+    [	"<a href='#{house_link}' title='#{house_text}: home page'>#{house_text}</a>", 
+    	"<a href='#{date_link}' title='#{house_text}: #{date_text}'>#{date_text}</a>",
+    	"<a href='#{section_link}' title='#{section}: #{date_text}'>#{section}</a>"
+    	].join(separator)
+    
   end
   
   def page_info
