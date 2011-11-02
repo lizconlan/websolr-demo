@@ -12,7 +12,10 @@
       div.result .ref {color:#666;}
       div.result .subject {display:block;}
       div.result blockquote.text {margin:0;}
-      div.result .nav {color:green;display:block;}
+      div.result .nav {color:green;font-style:normal;font-size:0.9em;display:block}
+      div.result .nav a,
+      div.result .nav a:visited {color:green;text-decoration:none}
+      div.result .nav a:hover {text-decoration:underline}
       blockquote.text em {font-weight:bold;font-style:normal;}
   %body
     %form
@@ -37,7 +40,7 @@
             %span.subject
               %a{:href => doc['url_ss'], :title => doc['url_ss']}
                 = doc['subject_ss']
-            %span.nav= doc['house_ss'] + ' Hansard &rsaquo; ' + doc['published_at_ds'] + ' &rsaquo; ' + doc['section_ss']
+            %span.nav= url_segments_line(doc['house_ss'], doc['section_ss'], doc['published_at_ds'], doc['url_ss'])
             %span.ref
               %span.house= "H" + doc['house_ss'][0,1] + " Deb vol " + doc['volume_ss']
               - if doc['columns_ss']

@@ -9,6 +9,23 @@ helpers do
   include Rack::Utils
   alias_method :h, :escape_html
   
+  def url_segments_line(house, section, date, url, separator="&rsaquo;")
+    parse_date = Date.parse(date)
+    url_parts = url.split("/")
+    house_text = "#{house} Hansard"
+    date_text = parse_date.strftime("%d %b %Y")
+    
+    date_link = "http://www.parliament.uk/business/publications/hansard/#{house.downcase()}/by-date/?d=#{parse_date.day}&m=#{parse_date.month}&y=#{parse_date.year}"
+    section_end = ""
+    if url_parts.last =~ /(\d*\.htm)/
+      page = $1
+      section_end = url_parts.last.split("#").first.gsub(page, "0001.htm")
+    end
+    section_link = "#{url_parts[0..url_parts.length-2].join("/")}/#{section_end}"
+
+    "#{house_text} #{separator} <a href=\"#{date_link}\">#{date_text}</a> #{separator} <a href=\"#{section_link}\">#{section}</a>"
+  end
+  
   def page_info
     info = "#{(@page.to_i-1)*10+1} to"
     if (@page.to_i-1)*10+10 < @found
