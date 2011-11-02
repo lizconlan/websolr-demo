@@ -13,7 +13,7 @@
       div.result .ref {color:gray;}
       div.result .subject {display:block;}
       div.result blockquote.text {margin:0;}
-      div.result .nav {color:green;display:block;}
+      div.result .nav {color:green;display:block;font-size:0.9em}
       blockquote.text em {font-weight:bold;font-style:normal;}
   %body
     %form
@@ -37,7 +37,7 @@
             %span.subject
               %a{:href => doc['url_ss'], :title => doc['url_ss']}
                 = doc['subject_ss']
-            %span.nav= doc['house_ss'] + ' Hansard &rsaquo; ' + doc['published_at_ds'] + ' &rsaquo; ' + doc['section_ss']
+            %span.nav= url_segments_line(doc['house_ss'], doc['section_ss'], doc['published_at_ds'], doc['url_ss'])
             %span.ref
               %span.house= "H" + doc['house_ss'][0,1] + " Deb vol " + doc['volume_ss']
               - if doc['columns_ss']
