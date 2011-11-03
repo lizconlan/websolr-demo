@@ -52,7 +52,8 @@
             
             %blockquote.text
               - result_text = @highlights[doc['id']]['text_texts'].to_s.strip
-              - if /^[a-z]/ =~ result_text[0,1]
+              -# how to match starting "<em>" optionally?
+              - if /^[a-z0-9]/ =~ result_text[0,1]
                 %span.intro= "... "
               = result_text          
               - unless result_text[-1..-1] == '.'
