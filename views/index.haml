@@ -17,8 +17,10 @@
       div.result .nav a:visited {color:green;text-decoration:none}
       div.result .nav a:hover {text-decoration:underline}
       blockquote.text em {font-weight:bold;font-style:normal;}
+      div#showing-only {background-color: #ebeff9;padding: 0.75em 0.5em;}
+      a.remove-facet {float:right;}
   %body
-    %form
+    %form#search
       %input{:name => "q", :value => @q}
       %input{:type => "Submit", :value => "Search"}
     - if @q
@@ -26,15 +28,16 @@
         - if @found > 10
           = "Showing #{page_info} of #{@found} results"
         - if @section_filter
-          %p
-            Showing results from #{@section_filter}
-        - else
-          - if @section_facets and @section_facets.length > 1
-            %ul.sections
-              %p Only show facets if more than ten results?
-              - @section_facets.each do |section|
-                %li.section
-                  %a{:href => "?q=#{params[:q]}&section=#{section[:name]}"}= "#{section[:name]} &mdash; #{section[:count]}"
+          #showing-only
+            Showing only <strong>results from #{@section_filter}</strong>.
+            %a.remove-facet{:href => "?q=#{params[:q]}"}
+              Show all
+        - if @section_facets and @section_facets.length > 1
+          #show-only Show only:
+          %ul.facets
+            - @section_facets.each do |section|
+              %li.facet
+                %a{:href => "?q=#{params[:q]}&section=#{section[:name]}"}= "#{section[:name]} &mdash; #{section[:count]}"
         - @docs.each do |doc|
           .result
             %span.subject
@@ -42,7 +45,7 @@
                 = doc['subject_ss']
             %span.nav= url_segments_line(doc['house_ss'], doc['section_ss'], doc['published_at_ds'], doc['url_ss'])
             %span.ref
-              %span.house= "H" + doc['house_ss'][0,1] + " Deb vol " + doc['volume_ss']
+              = "H" + doc['house_ss'][0,1] + " Deb vol " + doc['volume_ss']
               - if doc['columns_ss']
                 =' cc' + doc['columns_ss']
               - if doc['part_ss']
