@@ -51,13 +51,16 @@ helpers do
   end
   
   def page_info
-    info = "#{(@page.to_i-1)*10+1} to"
-    if (@page.to_i-1)*10+10 < @found
-      info = "#{info} #{(@page.to_i-1)*10+10}"
+    prev_page = @page.to_i-1
+    info = [prev_page*10+1, 'to']
+    
+    if prev_page*10+10 < @found
+      info << prev_page*10+10
     else
-      info = "#{info} #{@found}"
+      info << @found
     end
-    info
+    
+    info.join(' ')
   end
   
   def facets_to_hash_array(facets)

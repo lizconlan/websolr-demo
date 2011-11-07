@@ -1,17 +1,20 @@
 - if @found > 0
-  .pagination
+  %center#pagination
     - if @page > 1
       - if params[:p]
         - qs =  "?" + request.query_string.gsub("&p=#{params[:p]}", "&p=#{@page-1}")
       - else
         - qs =  "?#{request.query_string}&p=#{@page-1}"
       
-      %a{:href => qs, :rel => "Previous"} &larr; Previous
-  
+      %a.rel-prev{:href => qs, :rel => "prev"} &larr; Previous
+      
+    -if @found > 10
+      %span.results= "#{page_info} of #{@found} results"
+      
     - if @found > (@page.to_i-1)*10+10
       - if params[:p]
         - qs =  "?" + request.query_string.gsub("&p=#{params[:p]}", "&p=#{@page+1}")
       - else
         - qs =  "?#{request.query_string}&p=#{@page+1}"
       
-      %a{:href => qs, :rel => "Next", :class => "right_link"} Next &rarr;
+      %a.rel-next{:href => qs, :rel => "next"} Next &rarr;

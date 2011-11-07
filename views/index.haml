@@ -19,14 +19,14 @@
       blockquote.text em {font-weight:bold;font-style:normal;}
       div#showing-only {background-color: #ebeff9;padding: 0.75em 0.5em;}
       a.remove-facet {float:right;}
+      center#pagination {padding-top: 1em;}
+      center#pagination .results {padding: 1em;color:gray;}
   %body
     %form#search
       %input{:name => "q", :value => @q}
       %input{:type => "Submit", :value => "Search"}
     - if @q
       #results
-        - if @found > 10
-          = "Showing #{page_info} of #{@found} results"
         - if @section_filter
           #showing-only
             Showing only <strong>results from #{@section_filter}</strong>.
