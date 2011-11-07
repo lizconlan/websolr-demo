@@ -9,6 +9,24 @@ helpers do
   include Rack::Utils
   alias_method :h, :escape_html
   
+  def top_and_tail(result_text)
+    # how to match starting "<em>" optionally?
+    return_text = ''
+    
+    unless /^[A-Z]/ =~ result_text[0,1]
+      return_text += '... '
+    end
+    
+    return_text += result_text          
+    
+    unless result_text[-1..-1] == '.'
+      return_text += " ..." 
+    end
+    
+    return_text
+    
+  end
+  
   def url_segments_line(house, section, date, url, separator=" &rsaquo; ")
     parse_date = Date.parse(date)
     url_parts = url.split("/")
@@ -72,7 +90,7 @@ get '/' do
 	    query = @q
 	  end
 	  
-	  url = WEBSOLR_URL + "/select/?q=text_texts:#{CGI::escape(query)}&facet=true&facet.mincount=1&facet.field=section_ss&wt=json&hl.fragsize=200&hl=true&hl.fl=text_texts"
+	  url = WEBSOLR_URL + "/select/?q=text_texts:#{CGI::escape(query)}&facet=true&facet.mincount=1&facet.field=volume_ss&facet.field=section_ss&facet.field=house_ss&wt=json&hl.fragsize=150&hl=true&hl.fl=text_texts"
 	  
 	  if @section_filter
 	    url = "#{url}&fq=section_ss:%22#{CGI::escape(@section_filter)}%22"

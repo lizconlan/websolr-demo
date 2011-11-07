@@ -26,7 +26,7 @@
         - if @found > 10
           = "Showing #{page_info} of #{@found} results"
         - if @section_filter
-          %b
+          %p
             Showing results from #{@section_filter}
         - else
           - if @section_facets and @section_facets.length > 1
@@ -51,13 +51,7 @@
               %span.chair= ' - Chair: ' + doc['chair_ss']
             
             %blockquote.text
-              - result_text = @highlights[doc['id']]['text_texts'].to_s.strip
-              -# how to match starting "<em>" optionally?
-              - if /^[a-z0-9]/ =~ result_text[0,1]
-                %span.intro= "... "
-              = result_text          
-              - unless result_text[-1..-1] == '.'
-                %span.more= " ..."        
+              = top_and_tail(@highlights[doc['id']]['text_texts'].to_s.strip)               
             - if doc['members_text']
               %ul.members
                 - doc['members_texts'].each do |member|
