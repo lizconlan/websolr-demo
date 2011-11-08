@@ -63,6 +63,10 @@ helpers do
     info.join(' ')
   end
   
+  def highlight(text, word)
+  	text.gsub(/#{word}.?\b/i, '<strong>\0</strong>')
+  end
+  
   def facets_to_hash_array(facets)
     hash_array = []
     name = ""

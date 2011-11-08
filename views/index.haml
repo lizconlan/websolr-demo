@@ -26,23 +26,23 @@
       %input{:name => "q", :value => @q}
       %input{:type => "Submit", :value => "Search"}
     - if @q
+      - if @section_filter
+        #showing-only
+          Showing only <strong>results from #{@section_filter}</strong>.
+          %a.remove-facet{:href => "?q=#{params[:q]}"}
+            Show all
+      - if @section_facets and @section_facets.length > 1
+        #show-only Show only:
+        %ul.facets
+          - @section_facets.each do |section|
+            %li.facet
+              %a{:href => "?q=#{params[:q]}&section=#{section[:name]}", :rel => "bookmark", :title => "#{section[:name]} items"}= section[:name]
       #results
-        - if @section_filter
-          #showing-only
-            Showing only <strong>results from #{@section_filter}</strong>.
-            %a.remove-facet{:href => "?q=#{params[:q]}"}
-              Show all
-        - if @section_facets and @section_facets.length > 1
-          #show-only Show only:
-          %ul.facets
-            - @section_facets.each do |section|
-              %li.facet
-                %a{:href => "?q=#{params[:q]}&section=#{section[:name]}"}= "#{section[:name]} &mdash; #{section[:count]}"
         - @docs.each do |doc|
           .result
             %span.subject
               %a{:href => doc['url_ss'], :title => doc['url_ss']}
-                = doc['subject_ss']
+                = highlight(doc['subject_ss'], @q)
             %span.nav= url_segments_line(doc['house_ss'], doc['section_ss'], doc['published_at_ds'], doc['url_ss'])
             %span.ref
               = "H" + doc['house_ss'][0,1] + " Deb vol " + doc['volume_ss']
@@ -55,10 +55,6 @@
             
             %blockquote.text
               = top_and_tail(@highlights[doc['id']]['text_texts'].to_s.strip)               
-            - if doc['members_text']
-              %ul.members
-                - doc['members_texts'].each do |member|
-                  %li.member= member
                 
     - if @q
       =haml :_pagination
