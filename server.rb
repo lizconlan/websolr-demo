@@ -52,10 +52,12 @@ helpers do
   
   def page_info
     prev_page = @page.to_i-1
+    prev_page_long_range = prev_page*10+10
+    
     info = [prev_page*10+1, 'to']
     
-    if prev_page*10+10 < @found
-      info << prev_page*10+10
+    if prev_page_long_range < @found
+      info << prev_page_long_range
     else
       info << @found
     end
