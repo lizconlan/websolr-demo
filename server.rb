@@ -114,7 +114,7 @@ get '/' do
 	    buffer = open(url).read
         result = JSON.parse(buffer)
         @found = result['response']['numFound']
-        @docs = result['response']['docs']
+        @results = result['response']['docs']
         @highlights = result['highlighting']
         @section_facets = facets_to_hash_array(result['facet_counts']['facet_fields']['section_ss'])
       else

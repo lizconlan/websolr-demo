@@ -38,23 +38,23 @@
             %li.facet
               %a{:href => "?q=#{params[:q]}&section=#{section[:name]}", :rel => "bookmark", :title => "#{section[:name]} items"}= section[:name]
       #results
-        - @docs.each do |doc|
+        - @results.each do |result|
           .result
             %span.subject
-              %a{:href => doc['url_ss'], :title => doc['url_ss']}
-                = highlight(doc['subject_ss'], @q)
-            %span.nav= url_segments_line(doc['house_ss'], doc['section_ss'], doc['published_at_ds'], doc['url_ss'])
+              %a{:href => result['url_ss'], :title => result['url_ss']}
+                = highlight(result['subject_ss'], @q)
+            %span.nav= url_segments_line(result['house_ss'], result['section_ss'], result['published_at_ds'], result['url_ss'])
             %span.ref
-              = "H" + doc['house_ss'][0,1] + " Deb vol " + doc['volume_ss']
-              - if doc['columns_ss']
-                =' cc' + doc['columns_ss']
-              - if doc['part_ss']
-                =' (Part ' + doc['part_ss'] + ')'
-            - if doc['chair_ss']
-              %span.chair= ' - Chair: ' + doc['chair_ss']
+              = "H" + result['house_ss'][0,1] + " Deb vol " + result['volume_ss']
+              - if result['columns_ss']
+                =' cc' + result['columns_ss']
+              - if result['part_ss']
+                =' (Part ' + result['part_ss'] + ')'
+            - if result['chair_ss']
+              %span.chair= ' - Chair: ' + result['chair_ss']
             
             %blockquote.text
-              = top_and_tail(@highlights[doc['id']]['text_texts'].to_s.strip)               
+              = top_and_tail(@highlights[result['id']]['text_texts'].to_s.strip)               
                 
     - if @q
       =haml :_pagination
