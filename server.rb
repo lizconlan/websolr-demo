@@ -10,25 +10,24 @@ helpers do
   include Rack::Utils
   alias_method :h, :escape_html
   
-  def top_and_tail(result_text)
-    # how to match starting "<em>" optionally?
+  def top_and_tail(result_text_array)
+    result_text = result_text_array['text_texts'].to_s.strip
     return_text = ''
     
-    unless /^[A-Z]/ =~ result_text[0,1]
+    unless /^([A-Z]|<)/ =~ result_text[0,1]
       return_text += '... '
     end
     
     return_text += result_text          
     
     unless result_text[-1..-1] == '.'
-      return_text += " ..." 
+      return_text += ' ...' 
     end
     
     return_text
-    
   end
   
-  def url_segments_line(house, section, date, url, separator=" &rsaquo; ")
+  def url_segments_line(house, section, date, url, separator=' &rsaquo; ')
     parse_date = Date.parse(date)
     url_parts = url.split("/")
     house_text = "#{house} Hansard"

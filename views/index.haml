@@ -9,7 +9,7 @@
       body {width:38em;margin-left:8em;margin-top:4em;margin-bottom:4em;font-family:Helvetica,sans-serif;}
       div.result {padding:0.75em 0;line-height:140%;}
       div.result .chair {color:#666;}
-      div.result .ref {color:#666;}
+      div.result .ref {color:#666;font-size:0.9em;}
       div.result .subject {display:block;}
       div.result blockquote.text {margin:0;}
       div.result .nav {color:green;font-style:normal;font-size:0.9em;display:block}
@@ -18,7 +18,7 @@
       div.result .nav a:hover {text-decoration:underline}
       blockquote.text em {font-weight:bold;font-style:normal;}
       div#showing-only {background-color: #ebeff9;padding: 0.75em 0.5em;}
-      a.remove-facet {float:right;}
+      a#remove-facet {float:right;}
       center#pagination {padding-top: 1em;}
       center#pagination .results {padding: 1em;color:gray;}
   %body
@@ -28,15 +28,15 @@
     - if @q
       - if @section_filter
         #showing-only
-          Showing only <strong>results from #{@section_filter}</strong>.
-          %a.remove-facet{:href => "?q=#{params[:q]}"}
+          Showing only results from <strong>#{@section_filter}</strong>
+          %a#remove-facet{:href => "?q=#{params[:q]}"}
             Show all
       - if @section_facets and @section_facets.length > 1
-        #show-only Show only:
         %ul.facets
+          %li.facet All Hansard content
           - @section_facets.each do |section|
             %li.facet
-              %a{:href => "?q=#{params[:q]}&section=#{section[:name]}", :rel => "bookmark", :title => "#{section[:name]} items"}= section[:name]
+              %a{:href => "?q=#{params[:q]}&section=#{section[:name]}", :title => "#{section[:name]} items"}= section[:name]
       #results
         - @results.each do |result|
           .result
@@ -54,7 +54,7 @@
               %span.chair= ' - Chair: ' + result['chair_ss']
             
             %blockquote.text
-              = top_and_tail(@highlights[result['id']]['text_texts'].to_s.strip)               
+              = top_and_tail @highlights[result['id']]              
                 
     - if @q
       =haml :_pagination
