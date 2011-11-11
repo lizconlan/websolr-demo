@@ -99,7 +99,7 @@ get '/' do
 	    query = @q
 	  end
 	  
-	  url = WEBSOLR_URL + "/select/?q=text_texts:#{CGI::escape(query)}&facet=true&facet.mincount=1&facet.field=volume_ss&facet.field=section_ss&facet.field=house_ss&wt=json&hl.fragsize=150&hl=true&hl.fl=text_texts"
+	  url = WEBSOLR_URL + "/select/?q=text_texts:#{CGI::escape(query)}&fq=type:Snippet&facet=true&facet.mincount=1&facet.field=volume_ss&facet.field=section_ss&facet.field=house_ss&wt=json&hl.fragsize=150&hl=true&hl.fl=text_texts"
 	  
 	  if @section_filter
 	    url = "#{url}&fq=section_ss:%22#{CGI::escape(@section_filter)}%22"
