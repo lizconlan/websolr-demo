@@ -65,7 +65,7 @@ helpers do
   end
   
   def highlight(text, word)
-  	text.gsub(/#{word}.?\b/i, '<strong>\0</strong>')
+  	text.gsub(/#{word}.?\b/i, '<em>\0</em>')
   end
   
   def facets_to_hash_array(facets)

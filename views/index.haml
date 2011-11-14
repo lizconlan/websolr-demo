@@ -13,8 +13,8 @@
       div.container{width:820px}
       div.container > .content{background-color:#fff;-webkit-border-radius:0 0 6px 6px;-moz-border-radius:0 0 6px 6px;border-radius:0 0 6px 6px;-webkit-box-shadow:0 1px 2px rgba(0,0,0,.15);-moz-box-shadow:0 1px 2px rgba(0,0,0,.15);box-shadow:0 1px 2px rgba(0,0,0,.15);margin:0 -20px;padding:20px}
       div.page-header{background-color:#f5f5f5;margin:-20px -20px 20px;padding:20px 20px 10px}
-      div.content .span10,.content .span4{min-height:500px}
-      div.content .span4{margin-left:0;padding-left:19px;xborder-left:1px solid #eee}
+      div.content .span10,.content div.span4{min-height:500px}
+      div.content div.span4{margin-left:0;padding-left:19px;xborder-left:1px solid #eee}
       div.topbar .btn{border:0}
   %body
     .topbar
@@ -32,21 +32,21 @@
       .content
         .page-header
           %form
-            %input.input-large{:type=>"search", :name => 'q', :value => @q, :placeholder=>"Search"}
-            %button.btn{:type=>'submit'} Search
+            %input.span5{:type=>"search", :name => 'q', :value => @q, :placeholder=>"Search"}
+            %button.btn.primary{:type=>'submit'} Search
+            %span.help-inline Words appearing in Hansard text
         .row
           .span10
             - if @q
               #results
                 - @results.each do |result|
                   .result
-                    %span
+                    %h4
                       %a{:href => result['url_ss'], :title => result['url_ss']}
                         = highlight(result['subject_ss'], @q)
+                      - if result['chair_ss']
+                        %small= ' Chair: ' + result['chair_ss']  
                     %span= url_segments_line(result['house_ss'], result['section_ss'], result['published_at_ds'], result['url_ss'])
-                    
-                    - if result['chair_ss']
-                      %span.chair= ' - Chair: ' + result['chair_ss']
                     
                     %blockquote
                       %p= top_and_tail @highlights[result['id']]
@@ -55,18 +55,22 @@
                         - if result['columns_ss']
                           =' cc' + result['columns_ss']
                         - if result['part_ss']
-                          =' (Part ' + result['part_ss'] + ')'              
+                          =' (Part ' + result['part_ss'] + ')' 
+                        
+                    
+
+                               
           .span4
             - if @section_filter
-              .row#showing-only
+              #showing-only
                 Showing only results from <strong>#{@section_filter}</strong>
                 %a#remove-facet{:href => "?q=#{params[:q]}"}
                   Show all
             - if @section_facets and @section_facets.length > 1
-              %ul.facets
-                %li.facet All Hansard content
+              %ul
+                %li All Hansard content
                 - @section_facets.each do |section|
-                  %li.facet
+                  %li
                     %a{:href => "?q=#{params[:q]}&section=#{section[:name]}", :title => "#{section[:name]} items"}= section[:name]     
       %footer            
       - if @q
