@@ -32,7 +32,11 @@ class InstanceAdapter < Sunspot::Adapters::InstanceAdapter
 
  class DataAccessor < Sunspot::Adapters::DataAccessor
    def load(id)
-     nil
+     ""
+   end
+   
+   def load_all(ids)
+     []
    end
  end
  
