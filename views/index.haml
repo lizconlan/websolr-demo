@@ -46,7 +46,7 @@
                         = highlight(result['subject_ss'], @q)
                       - if result['chair_ss']
                         %small= ' Chair: ' + result['chair_ss']  
-                    %span= url_segments_line(result['house_ss'], result['section_ss'], result['published_at_ds'], result['url_ss'])
+                    %ul.breadcrumb= url_segments_line(result['house_ss'], result['section_ss'], result['published_at_ds'], result['url_ss'])
                     
                     %blockquote
                       %p= top_and_tail @highlights[result['id']]

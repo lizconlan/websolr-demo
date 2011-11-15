@@ -27,7 +27,7 @@ helpers do
     return_text
   end
   
-  def url_segments_line(house, section, date, url, separator=' &rsaquo; ')
+  def url_segments_line(house, section, date, url, divider=' <span class="divider">/</span> ')
     parse_date = Date.parse(date)
     url_parts = url.split("/")
     house_text = "#{house} Hansard"
@@ -35,18 +35,19 @@ helpers do
     date_text = parse_date.strftime("%d %b %Y")
     
     date_link = "http://www.parliament.uk/business/publications/hansard/#{house.downcase()}/by-date/?d=#{parse_date.day}&m=#{parse_date.month}&y=#{parse_date.year}"
-    section_end = ""
+    section_end = ''
+    
     if url_parts.last =~ /(\d*\.htm)/
       page = $1
       section_end = url_parts.last.split("#").first.gsub(page, "0001.htm")
     end
+    
     section_link = "#{url_parts[0..url_parts.length-2].join("/")}/#{section_end}"
 
-    [	"<a href='#{house_link}' title='#{house_text}: home page'>#{house_text}</a>", 
-    	"<a href='#{date_link}' title='#{house_text}: #{date_text}'>#{date_text}</a>",
-    	"<a href='#{section_link}' title='#{section}: #{date_text}'>#{section}</a>"
-    	].join(separator)
-    
+    [	"<li><a href='#{house_link}' title='#{house_text}: home page'>#{house_text}</a>#{divider}</li>", 
+    	"<li><a href='#{date_link}' title='#{house_text}: #{date_text}'>#{date_text}</a>#{divider}</li>",
+    	"<li><a href='#{section_link}' title='#{section}: #{date_text}'>#{section}</a></li>"
+    	].join
   end
   
   def page_info
