@@ -1,3 +1,4 @@
+!!! 5
 %html
   %head
     %title 
@@ -5,73 +6,62 @@
         Hansard Search
       - else
         = @q + ' (Hansard Search)'
-    %link{:rel=>"stylesheet", :href=>"http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css"}
     %style
-      html,body{background-color:#eee}
-      body{padding-top:40px}
-      div.container > footer p{text-align:center}
-      div.container{width:820px}
-      div.container > .content{background-color:#fff;-webkit-border-radius:0 0 6px 6px;-moz-border-radius:0 0 6px 6px;border-radius:0 0 6px 6px;-webkit-box-shadow:0 1px 2px rgba(0,0,0,.15);-moz-box-shadow:0 1px 2px rgba(0,0,0,.15);box-shadow:0 1px 2px rgba(0,0,0,.15);margin:0 -20px;padding:20px}
-      div.page-header{background-color:#f5f5f5;margin:-20px -20px 20px;padding:20px 20px 10px}
-      div.content .span10,.content div.span4{min-height:500px}
-      div.content div.span4{margin-left:0;padding-left:19px;xborder-left:1px solid #eee}
-      div.topbar .btn{border:0}
+      body{width:42em;margin:2em auto;font-family:Helvetica,sans-serif}
+      div.result{padding:1em 0}
+      div.result big{display:block}
+      div.result span.breadcrumbs{display:block;color:green}
+      div.result span.breadcrumbs a{color:green;text-decoration:none}
+      div.result span.breadcrumbs a:hover{text-decoration:underline}
+      div.result span.text em{font-weight:bold;font-style:normal}
+      div.result span.citation{font-size:0.9em;display:block;color:gray}
+      
   %body
-    .topbar
-      .fill
-        .container
-          %a.brand{:href=>"/"} HansardSearch
-          %ul.nav
-            %li.active
-              %a{:href=>"/"}Home
-            %li
-              %a{:href=>"#about"}About
-            %li
-              %a{:href=>"#contact"}Contact
-    .container
-      .content
-        .page-header
-          %form
-            %input.span5{:type=>"search", :name => 'q', :value => @q, :placeholder=>"Search"}
-            %button.btn.primary{:type=>'submit'} Search
-            %span.help-inline Words appearing in Hansard text
-        .row
-          .span10
-            - if @q
-              #results
-                - @results.each do |result|
-                  .result
-                    %h4
-                      %a{:href => result['url_ss'], :title => result['url_ss']}
-                        = highlight(result['subject_ss'], @q)
-                      - if result['chair_ss']
-                        %small= ' Chair: ' + result['chair_ss']  
-                    %ul.breadcrumb= url_segments_line(result['house_ss'], result['section_ss'], result['published_at_ds'], result['url_ss'])
-                    
-                    %blockquote
-                      %p= top_and_tail @highlights[result['id']]
-                      %small
-                        = "H" + result['house_ss'][0,1] + " Deb vol " + result['volume_ss']
-                        - if result['columns_ss']
-                          =' cc' + result['columns_ss']
-                        - if result['part_ss']
-                          =' (Part ' + result['part_ss'] + ')' 
-                        
-                    
+    %header
+      %nav
+        %a{:href=>"/"} HansardSearch
+      %form
+        %input{:name => 'q', :value => @q, :placeholder=>"Search"}
+        %button{:type=>'submit'} Search
+    %section
+      - if @q
+        - if @section_filter
+          #showing-only
+            Showing only results from <strong>#{@section_filter}</strong>
+            %a{:href => "?q=#{params[:q]}"}
+              Show all
+        - if @section_facets and @section_facets.length > 1
+          %ul
+            %li All Hansard content
+            - @section_facets.each do |section|
+              %li
+                %a{:href => "?q=#{params[:q]}&section=#{section[:name]}",
+                   :title => "#{section[:name]} items"}= section[:name]
+        - @results.each do |result|
+          %div.result
+            %big.title
+              %a{:href => result['url_ss'], :title => result['url_ss']}
+                = highlight(result['subject_ss'], @q)
+            %span.breadcrumbs= url_segments_line(result['house_ss'], result['section_ss'], result['published_at_ds'], result['url_ss'], result['department_ss'])
+            %span.text
+              = top_and_tail @highlights[result['id']]
+              /= result['text_texts']
+              /expand above with more tag
+              - if result['question_ss']
+                %span.question-uin= "[#{result['question_ss']}]"
+                /should only appear is quin not in text
+            %span.citation
+              = "H" + result['house_ss'][0,1] + " Deb vol " + result['volume_ss']
+              - if result['columns_ss']
+                =' cc' + result['columns_ss']
+              - if result['part_ss']
+                =' (Part ' + result['part_ss'] + ')' 
+              - if result['chair_ss']
+                = ' Chair: ' + result['chair_ss']
+                
 
-                               
-          .span4
-            - if @section_filter
-              #showing-only
-                Showing only results from <strong>#{@section_filter}</strong>
-                %a#remove-facet{:href => "?q=#{params[:q]}"}
-                  Show all
-            - if @section_facets and @section_facets.length > 1
-              %ul
-                %li All Hansard content
-                - @section_facets.each do |section|
-                  %li
-                    %a{:href => "?q=#{params[:q]}&section=#{section[:name]}", :title => "#{section[:name]} items"}= section[:name]     
-      %footer            
+               
+      %footer       
+        %p &copy; UK Parliament     
       - if @q
         %p=haml :_pagination

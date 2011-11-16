@@ -27,10 +27,9 @@ helpers do
     return_text
   end
   
-  def url_segments_line(house, section, date, url, divider=' <span class="divider">/</span> ')
+  def url_segments_line(house, section, date, url, department = '')
     parse_date = Date.parse(date)
     url_parts = url.split("/")
-    house_text = "#{house} Hansard"
     house_link = "http://www.parliament.uk/business/publications/hansard/#{house.downcase}/"
     date_text = parse_date.strftime("%d %b %Y")
     
@@ -42,12 +41,13 @@ helpers do
       section_end = url_parts.last.split("#").first.gsub(page, "0001.htm")
     end
     
-    section_link = "#{url_parts[0..url_parts.length-2].join("/")}/#{section_end}"
+    section_link = [url_parts[0..url_parts.length-2].join("/"),section_end].join('/')
+    
+    breadcrumbs = "<a href='#{date_link}'>#{house} Hansard #{date_text}</a> &rsaquo; <a href='#{section_link}'>#{section}</a>"
 
-    [	"<li><a href='#{house_link}' title='#{house_text}: home page'>#{house_text}</a>#{divider}</li>", 
-    	"<li><a href='#{date_link}' title='#{house_text}: #{date_text}'>#{date_text}</a>#{divider}</li>",
-    	"<li><a href='#{section_link}' title='#{section}: #{date_text}'>#{section}</a></li>"
-    	].join
+    (breadcrumbs << ' &rsaquo; ' << department) if department
+    
+	breadcrumbs
   end
   
   def page_info
@@ -66,7 +66,7 @@ helpers do
   end
   
   def highlight(text, word)
-  	text.gsub(/#{word}.?\b/i, '<em>\0</em>')
+    text.gsub(/#{word}.?\b/i, '<strong>\0</strong>')
   end
   
   def facets_to_hash_array(facets)
@@ -122,6 +122,6 @@ get '/' do
       end
     end
     
-	haml :index
+	haml :index, :format => :html5
 end
   
