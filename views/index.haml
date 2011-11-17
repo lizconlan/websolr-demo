@@ -8,14 +8,16 @@
         = @q + ' (Hansard Search)'
     %style
       body{width:40em;margin:4em auto;font-family:Helvetica,sans-serif}
-      div.result{padding:1em 0}
+      div.result{padding:0.9em 0}
       div.result big{display:block}
-      div.result span.breadcrumbs{display:block;color:green}
+      div.result span.breadcrumbs{display:block;color:green;padding-bottom:0.1em}
       div.result span.breadcrumbs a{color:green;text-decoration:none}
       div.result span.breadcrumbs a:hover{text-decoration:underline}
+      div.result span.text{line-height:1.25em}
       div.result span.text em{font-weight:bold;font-style:normal}
-      div.result span.citation{font-size:0.9em;display:block;color:gray}
-      
+      div.result span.citation{font-size:0.9em;display:block;color:gray;padding:0.1em 0}
+      div.result span.contributors{font-size:0.9em;display:block;color:gray;padding:0.1em 0}
+      nav{float:right}
   %body
     %header
       %nav
@@ -43,19 +45,25 @@
               %a{:href => result['url_ss'], :title => result['url_ss']}
                 = prepare_title(result['subject_ss'], @q)
             %span.breadcrumbs= url_segments_line(result['house_ss'], result['section_ss'], result['published_at_ds'], result['url_ss'], result['department_ss'])
-            %span.text
-              = top_and_tail @highlights[result['id']]
-              /= result['text_texts']
-              /expand above with more tag
             %span.citation
               = 'H' + result['house_ss'][0,1] + ' Deb vol ' + result['volume_ss']
-              =' cc' + result['columns_ss'] if result['columns_ss']
-              =' (Part ' + result['part_ss'] + ')' if result['part_ss']
-              = ' &ndash; Question: ' + result['question_ss'] if result['question_ss']
-              = ' &ndash; Chair: ' + result['chair_ss'] if result['chair_ss']
-                
-
-               
+              = ' cc' + result['columns_ss'] if result['columns_ss']
+              = ' (Part ' + result['part_ss'] + ')' if result['part_ss']
+              = ' - Question: ' + result['question_ss'] if result['question_ss']
+              = ' - Chair: ' + result['chair_ss'] if result['chair_ss']
+            %span.text
+              = top_and_tail @highlights[result['id']]
+            %span.contributors
+              Contributors:
+              - if result['members_texts'].length > 3
+                = result['members_texts'][0,3].join(', ')
+                and
+                = result['members_texts'].length - 3
+                others
+              - else
+                = result['members_texts'].join(', ')
+            
+                    
       %footer       
         %p &copy; UK Parliament     
       - if @q

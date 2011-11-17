@@ -28,6 +28,7 @@ helpers do
   end
   
   def url_segments_line(house, section, date, url, department = '')
+  
     parse_date = Date.parse(date)
     url_parts = url.split('/')
     date_text = parse_date.strftime("%d %b %Y")
@@ -36,14 +37,14 @@ helpers do
     
     if url_parts.last =~ /(\d*\.htm)/
       page = $1
-      section_end = url_parts.last.split("#").first.gsub(page, "0001.htm")
+      section_end = url_parts.last.split('#').first.gsub(page, '0001.htm')
     end
     
-    section_link = [url_parts[0..url_parts.length-2].join("/"),section_end].join('/')
+    section_link = [url_parts[0..url_parts.length-2].join('/'),section_end].join('/')
     
     breadcrumbs = "<a href='#{date_link}'>#{house} Hansard #{date_text}</a> &rsaquo; <a href='#{section_link}'>#{section}</a>"
 
-    (breadcrumbs << ' &rsaquo; ' << department.gsub(' and ',' & ')) if department
+    breadcrumbs << ' &rsaquo; ' << department.gsub(' and ',' & ') if department
     
 	breadcrumbs
   end
@@ -64,7 +65,7 @@ helpers do
   end
   
   def prepare_title(text, word)
-    text.gsub(/#{word}.?\b/i, '<strong>\0</strong>').gsub(':', ' &ndash;')
+    text.gsub(/#{word}.?\b/i, '<strong>\0</strong>').gsub(':', ' -')
   end
   
   def facets_to_hash_array(facets)
