@@ -7,7 +7,7 @@
       - else
         = @q + ' (Hansard Search)'
     %style
-      body{width:42em;margin:2em auto;font-family:Helvetica,sans-serif}
+      body{width:40em;margin:4em auto;font-family:Helvetica,sans-serif}
       div.result{padding:1em 0}
       div.result big{display:block}
       div.result span.breadcrumbs{display:block;color:green}
@@ -41,23 +41,18 @@
           %div.result
             %big.title
               %a{:href => result['url_ss'], :title => result['url_ss']}
-                = highlight(result['subject_ss'], @q)
+                = prepare_title(result['subject_ss'], @q)
             %span.breadcrumbs= url_segments_line(result['house_ss'], result['section_ss'], result['published_at_ds'], result['url_ss'], result['department_ss'])
             %span.text
               = top_and_tail @highlights[result['id']]
               /= result['text_texts']
               /expand above with more tag
-              - if result['question_ss']
-                %span.question-uin= "[#{result['question_ss']}]"
-                /should only appear is quin not in text
             %span.citation
-              = "H" + result['house_ss'][0,1] + " Deb vol " + result['volume_ss']
-              - if result['columns_ss']
-                =' cc' + result['columns_ss']
-              - if result['part_ss']
-                =' (Part ' + result['part_ss'] + ')' 
-              - if result['chair_ss']
-                = ' Chair: ' + result['chair_ss']
+              = 'H' + result['house_ss'][0,1] + ' Deb vol ' + result['volume_ss']
+              =' cc' + result['columns_ss'] if result['columns_ss']
+              =' (Part ' + result['part_ss'] + ')' if result['part_ss']
+              = ' &ndash; Question: ' + result['question_ss'] if result['question_ss']
+              = ' &ndash; Chair: ' + result['chair_ss'] if result['chair_ss']
                 
 
                

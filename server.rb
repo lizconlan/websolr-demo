@@ -29,10 +29,8 @@ helpers do
   
   def url_segments_line(house, section, date, url, department = '')
     parse_date = Date.parse(date)
-    url_parts = url.split("/")
-    house_link = "http://www.parliament.uk/business/publications/hansard/#{house.downcase}/"
+    url_parts = url.split('/')
     date_text = parse_date.strftime("%d %b %Y")
-    
     date_link = "http://www.parliament.uk/business/publications/hansard/#{house.downcase()}/by-date/?d=#{parse_date.day}&m=#{parse_date.month}&y=#{parse_date.year}"
     section_end = ''
     
@@ -45,7 +43,7 @@ helpers do
     
     breadcrumbs = "<a href='#{date_link}'>#{house} Hansard #{date_text}</a> &rsaquo; <a href='#{section_link}'>#{section}</a>"
 
-    (breadcrumbs << ' &rsaquo; ' << department) if department
+    (breadcrumbs << ' &rsaquo; ' << department.gsub(' and ',' & ')) if department
     
 	breadcrumbs
   end
@@ -65,8 +63,8 @@ helpers do
     info.join(' ')
   end
   
-  def highlight(text, word)
-    text.gsub(/#{word}.?\b/i, '<strong>\0</strong>')
+  def prepare_title(text, word)
+    text.gsub(/#{word}.?\b/i, '<strong>\0</strong>').gsub(':', ' &ndash;')
   end
   
   def facets_to_hash_array(facets)
