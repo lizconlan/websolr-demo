@@ -55,13 +55,8 @@
               = top_and_tail @highlights[result['id']]
             %span.contributors
               Contributors:
-              - if result['members_texts'].length > 3
-                = result['members_texts'][0,3].join(', ')
-                and
-                = result['members_texts'].length - 3
-                others
-              - else
-                = result['members_texts'].join(', ')
+              = prepare_contributors(result['members_texts'])
+              
             
                     
       %footer       

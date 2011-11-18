@@ -11,18 +11,15 @@ helpers do
   alias_method :h, :escape_html
   
   def top_and_tail(result_text_array)
-    result_text = result_text_array['text_texts'].to_s.strip
+    result_text = result_text_array['text_texts'].to_s.gsub(/^[\.|\)]/, '').strip
+    
     return_text = ''
     
-    unless /^([A-Z]|<)/ =~ result_text[0,1]
-      return_text += '... '
-    end
+    return_text += '... ' unless /^([A-Z]|<)/ =~ result_text[0,1]
     
     return_text += result_text          
     
-    unless result_text[-1..-1] == '.'
-      return_text += ' ...' 
-    end
+    return_text += ' ...' unless result_text[-1..-1] == '.' 
     
     return_text
   end
@@ -66,6 +63,15 @@ helpers do
   
   def prepare_title(text, word)
     text.gsub(/#{word}.?\b/i, '<strong>\0</strong>').gsub(':', ' -')
+  end
+  
+  def prepare_contributors(members_array)
+    if members_array.length > 3
+      members_array.length == 4 ? trailing_text = ' and one other' : trailing_text = ' and ' + (members_array.length - 3).to_s + ' others'
+      members_array[0,3].join(', ') + trailing_text
+    else
+      members_array.join(', ')
+    end
   end
   
   def facets_to_hash_array(facets)
