@@ -17,7 +17,11 @@
       div.result span.text em{font-weight:bold;font-style:normal}
       div.result span.citation{font-size:0.9em;display:block;color:gray;padding:0.1em 0}
       div.result span.contributors{font-size:0.9em;display:block;color:gray;padding:0.1em 0}
-      nav{float:right}
+      nav, a.remove-facet{float:right}
+      div#facet-active{font-weight:bold;border-left:4pt solid crimson;color:crimson;padding:0.5em 1em}
+      div#facet-inactive{font-weight:bold;text-decoration:none;color:#666;padding:0.5em 1em}
+      div#facet-inactive:hover{background-color:#eee;}
+      div#facet-active:hover{background-color:#eee;}
   %body
     %header
       %nav
@@ -28,17 +32,19 @@
     %section
       - if @q
         - if @section_filter
-          #showing-only
-            Showing only results from <strong>#{@section_filter}</strong>
+          #facet-inactive
             %a{:href => "?q=#{params[:q]}"}
-              Show all
+              All Hansard content
+          #facet-active
+            = @section_filter
+          
         - if @section_facets and @section_facets.length > 1
-          %ul
-            %li All Hansard content
-            - @section_facets.each do |section|
-              %li
-                %a{:href => "?q=#{params[:q]}&section=#{section[:name]}",
-                   :title => "#{section[:name]} items"}= section[:name]
+          #facet-active
+            All Hansard content
+          - @section_facets.each do |section|
+            #facet-inactive
+              %a{:href => "?q=#{params[:q]}&section=#{section[:name]}",
+                 :title => "#{section[:name]} items"}= section[:name]
         - @results.each do |result|
           %div.result
             %big.title

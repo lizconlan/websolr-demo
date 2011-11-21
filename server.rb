@@ -10,16 +10,16 @@ helpers do
   include Rack::Utils
   alias_method :h, :escape_html
   
-  def top_and_tail(result_text_array)
-    result_text = result_text_array['text_texts'].to_s.gsub(/^[\.|\)]/, '').strip
+  def top_and_tail(result_highlights_array)
     
     return_text = ''
+	result_highlights_text = result_highlights_array['text_texts'].to_s.gsub(/^[\.|\)]/, '').strip
     
-    return_text += '... ' unless /^([A-Z]|<)/ =~ result_text[0,1]
+    return_text << '... ' unless /^([A-Z]|<)/ =~ result_highlights_text[0,1]
     
-    return_text += result_text          
+    return_text << result_highlights_text          
     
-    return_text += ' ...' unless result_text[-1..-1] == '.' 
+    return_text << ' ...' unless result_highlights_text[-1..-1] == '.' 
     
     return_text
   end
