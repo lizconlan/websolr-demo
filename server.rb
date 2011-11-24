@@ -65,12 +65,27 @@ helpers do
     text.gsub(/#{word}.?\b/i, '<strong>\0</strong>').gsub(':', ' -')
   end
   
-  def prepare_contributors(members)
+  def prepare_contributors(members_array)
     
-    members.length == 1 ? return_text = 'Contributor: ' : return_text = 'Contributors: '
+    members_array_length = members_array.length
     
-    members.length > 3 ? (members.length == 4 ? return_text << ' and one other' : return_text << ' and ' << (members.length - 3).to_s << ' others'
-      members[0,3].join(', ') << return_text) : return_text << members.join(', ')
+    if members_array_length == 1
+      contributors_text = 'Contributor: '
+    else
+      contributors_text = 'Contributors: '
+    end
+    
+    if members_array_length > 3
+      if members_array_length == 4
+        contributors_text << members_array.join(', ') << ' and one other'
+      else
+        contributors_text << members_array[0,3].join(', ') << ' and ' << (members_array_length - 3).to_s << ' others'
+      end
+    else
+      contributors_text << members_array.join(', ') 
+    end
+        
+    contributors_text
     
   end
   
