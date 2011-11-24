@@ -65,13 +65,13 @@ helpers do
     text.gsub(/#{word}.?\b/i, '<strong>\0</strong>').gsub(':', ' -')
   end
   
-  def prepare_contributors(members_array)
-    if members_array.length > 3
-      members_array.length == 4 ? trailing_text = ' and one other' : trailing_text = ' and ' + (members_array.length - 3).to_s + ' others'
-      members_array[0,3].join(', ') + trailing_text
-    else
-      members_array.join(', ')
-    end
+  def prepare_contributors(members)
+    
+    members.length == 1 ? return_text = 'Contributor: ' : return_text = 'Contributors: '
+    
+    members.length > 3 ? (members.length == 4 ? return_text << ' and one other' : return_text << ' and ' << (members.length - 3).to_s << ' others'
+      members[0,3].join(', ') << return_text) : return_text << members.join(', ')
+    
   end
   
   def facets_to_hash_array(facets)

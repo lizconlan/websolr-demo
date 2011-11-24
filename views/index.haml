@@ -17,11 +17,14 @@
       div.result span.text em{font-weight:bold;font-style:normal}
       div.result span.citation{font-size:0.9em;display:block;color:gray;padding:0.1em 0}
       div.result span.contributors{font-size:0.9em;display:block;color:gray;padding:0.1em 0}
-      nav, a.remove-facet{float:right}
-      div#facet-active{font-weight:bold;border-left:4pt solid crimson;color:crimson;padding:0.5em 1em}
-      div#facet-inactive{font-weight:bold;text-decoration:none;color:#666;padding:0.5em 1em}
-      div#facet-inactive:hover{background-color:#eee;}
-      div#facet-active:hover{background-color:#eee;}
+      nav{float:right}
+      ul#facets {padding-left:0}
+      ul#facets li{list-style-type:none;text-indent:0}
+      li.facet-active{border-left:4pt solid crimson;color:crimson;padding:0.5em 1em;}
+      li.facet-inactive{border-left:4pt solid #fff;text-decoration:none;color:#000;padding:0.5em 1em}
+      li.facet-inactive a{color:#000;text-decoration:none}
+      li.facet-inactive:hover{background-color:#eee;border-left:4pt solid #eee;}
+      li.facet-active:hover{background-color:#eee;}
   %body
     %header
       %nav
@@ -31,20 +34,23 @@
         %button{:type=>'submit'} Search
     %section
       - if @q
+        
         - if @section_filter
-          #facet-inactive
-            %a{:href => "?q=#{params[:q]}"}
-              All Hansard content
-          #facet-active
-            = @section_filter
+          %ul#facets
+            %li.facet-inactive
+              %a{:href => "?q=#{params[:q]}"}
+                All Hansard content
+            %li.facet-active
+              = @section_filter
           
         - if @section_facets and @section_facets.length > 1
-          #facet-active
-            All Hansard content
-          - @section_facets.each do |section|
-            #facet-inactive
-              %a{:href => "?q=#{params[:q]}&section=#{section[:name]}",
-                 :title => "#{section[:name]} items"}= section[:name]
+          %ul#facets
+            %li.facet-active
+              All Hansard content
+            - @section_facets.each do |section|
+              %li.facet-inactive
+                %a{:href => "?q=#{params[:q]}&section=#{section[:name]}",
+                   :title => "#{section[:name]} items"}= section[:name]
         - @results.each do |result|
           %div.result
             %big.title
@@ -60,7 +66,6 @@
             %span.text
               = top_and_tail @highlights[result['id']]
             %span.contributors
-              Contributors:
               = prepare_contributors(result['members_texts'])
               
             
