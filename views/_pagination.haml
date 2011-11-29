@@ -16,5 +16,6 @@
         - qs =  "?" + request.query_string.gsub("&p=#{params[:p]}", "&p=#{@page+1}")
       - else
         - qs =  "?#{request.query_string}&p=#{@page+1}"
-      
+      %script
+        $.mobile.loadPage( '#{qs}', { showLoadMsg: false } );
       %a.rel-next{:href => qs, :rel => "next"} Next &rarr;

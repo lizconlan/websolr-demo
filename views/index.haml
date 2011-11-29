@@ -10,6 +10,8 @@
       %meta{:name=>"viewport", :content=>"width=device-width, initial-scale=1"}
       %link{:rel=>"stylesheet", :href=>"http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css"}
       %script{:type=>"text/javascript", :src=>"http://code.jquery.com/jquery-1.6.4.min.js"}
+      %script
+        $(document).bind("mobileinit", function(){$.mobile.touchOverflowEnabled = true;});
       %script{:type=>"text/javascript", :src=>"http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"}
     %style
       body{width:40em;margin:4em auto;font-family:Helvetica,sans-serif}
@@ -31,54 +33,56 @@
       li.facet-inactive:hover{background-color:#eee;border-left:4pt solid #eee;}
       li.facet-active:hover{background-color:#eee;}
   %body
-    %header{:data => {:role=>'header'}}
-      %nav
-        %a{:href=>"/"} HansardSearch
-      %form
-        %input{:name => 'q', :type => 'search', :value => @q, :placeholder=>"Search"}
-        %button{:type=>'submit'} Search
-    %section{:data => {:role=>'content'}}
-      - if @q
-        
-        - if @section_filter
-          %ul#facets
-            %li.facet-inactive
-              %a{:href => "?q=#{params[:q]}"}
-                All Hansard content
-            %li.facet-active
-              = @section_filter
+    %div{:data => {:role=>'page'}}
+      %header{:data => {:role=>'header'}}
+        %nav
+          %a{:href=>"/"} HansardSearch
+        %form
+          %input{:name => 'q', :type => 'search', :value => @q, :placeholder=>"Search"}
+          %button{:type=>'submit'} Search
+      %section{:data => {:role=>'content'}}
+        - if @q
           
-        - if @section_facets and @section_facets.length > 1
-          %ul#facets
-            %li.facet-active
-              All Hansard content
-            - @section_facets.each do |section|
+          - if @section_filter
+            %ul#facets
               %li.facet-inactive
-                %a{:href => "?q=#{params[:q]}&section=#{section[:name]}",
-                   :title => "#{section[:name]} items"}= section[:name]
-        - @results.each do |result|
-          %div.result
-            %big.title
-              %a{:href => result['url_ss'], :title => result['url_ss']}
-                = prepare_title(result['subject_ss'], @q)
-            %span.breadcrumbs= url_segments_line(result['house_ss'], result['section_ss'], result['published_at_ds'], result['url_ss'], result['department_ss'])
-            %span.citation
-              = 'H' + result['house_ss'][0,1] + ' Deb vol ' + result['volume_ss']
-              - if result['columns_ss'] =~ /to/
-                = ' cc' << result['columns_ss']
-              - else
-                = ' c' << result['columns_ss']
-              = ' (Part ' + result['part_ss'] + ')' if result['part_ss']
-              = ' - Question: ' + result['question_ss'] if result['question_ss']
-              = ' - Chair: ' + result['chair_ss'] if result['chair_ss']
-            %span.text
-              = top_and_tail @highlights[result['id']]
-            %span.contributors
-              = prepare_contributors(result['members_texts'])
-              
+                %a{:href => "?q=#{params[:q]}"}
+                  All Hansard content
+              %li.facet-active
+                = @section_filter
             
-                    
-      %footer       
-        %p &copy; UK Parliament     
-      - if @q
-        %p=haml :_pagination
+          - if @section_facets and @section_facets.length > 1
+            %ul#facets
+              %li.facet-active
+                All Hansard content
+              - @section_facets.each do |section|
+                %li.facet-inactive
+                  %a{:href => "?q=#{params[:q]}&section=#{section[:name]}",
+                     :title => "#{section[:name]} items"}= section[:name]
+          - @results.each do |result|
+            %div.result
+              %big.title
+                %a{:href => result['url_ss'], :title => result['url_ss']}
+                  = prepare_title(result['subject_ss'], @q)
+              %span.breadcrumbs= url_segments_line(result['house_ss'], result['section_ss'], result['published_at_ds'], result['url_ss'], result['department_ss'])
+              %span.citation
+                = 'H' + result['house_ss'][0,1] + ' Deb vol ' + result['volume_ss']
+                - if result['columns_ss'] =~ /to/
+                  = ' cc' << result['columns_ss']
+                - else
+                  = ' c' << result['columns_ss']
+                = ' (Part ' + result['part_ss'] + ')' if result['part_ss']
+                = ' - Question: ' + result['question_ss'] if result['question_ss']
+                = ' - Chair: ' + result['chair_ss'] if result['chair_ss']
+              %span.text
+                = top_and_tail @highlights[result['id']]
+              %span.contributors
+                = prepare_contributors(result['members_texts'])
+                
+              
+                      
+        %footer{:data => {:role=>'footer'}} 
+          - if @q
+            %p=haml :_pagination      
+          %center &copy; UK Parliament     
+          
