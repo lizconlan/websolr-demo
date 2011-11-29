@@ -5,8 +5,10 @@
         - qs =  "?" + request.query_string.gsub("&p=#{params[:p]}", "&p=#{@page-1}")
       - else
         - qs =  "?#{request.query_string}&p=#{@page-1}"
-      
-      %a.rel-prev{:href => qs, :rel => "prev"} &larr; Previous
+      - if @request.user_agent =~ /iPhone|iPad/
+        %a.rel-prev{:href => qs, :rel => "prev", :data => {:role=>'button', :icon=>'arrow-l'}} Previous
+      - else
+        %a.rel-prev{:href => qs, :rel => "prev"} &larr; Previous
       
     -if @found > 10
       %span.results= "#{page_info} of #{@found} results"
@@ -16,6 +18,10 @@
         - qs =  "?" + request.query_string.gsub("&p=#{params[:p]}", "&p=#{@page+1}")
       - else
         - qs =  "?#{request.query_string}&p=#{@page+1}"
-      %script
-        $.mobile.loadPage( '#{qs}', { showLoadMsg: false } );
-      %a.rel-next{:href => qs, :rel => "next"} Next &rarr;
+        
+      - if @request.user_agent =~ /iPhone|iPad/
+        %script
+          $.mobile.loadPage( '#{qs}', { showLoadMsg: false } );
+        %a.rel-next{:href => qs, :rel => "next", :data => {:role=>'button', :icon=>'arrow-r', :iconpos=>'right'}} Next
+      - else
+        %a.rel-next{:href => qs, :rel => "next", :data => {:role=>'button'}} Next &rarr;

@@ -33,14 +33,14 @@
       li.facet-inactive:hover{background-color:#eee;border-left:4pt solid #eee;}
       li.facet-active:hover{background-color:#eee;}
   %body
-    %div{:data => {:role=>'page'}}
-      %header{:data => {:role=>'header'}}
+    %div{:data => {:role=>'page', :theme=>'d'}}
+      %header{:data => {:role=>'header', :theme=>'d'}}
         %nav
           %a{:href=>"/"} HansardSearch
         %form
           %input{:name => 'q', :type => 'search', :value => @q, :placeholder=>"Search"}
-          %button{:type=>'submit'} Search
-      %section{:data => {:role=>'content'}}
+          / %button{:type=>'submit', :data => {:inline=>'true'}} Search
+      %section{:data => {:role=>'content', :theme=>'d'}}
         - if @q
           
           - if @section_filter
@@ -81,7 +81,7 @@
                 
               
                       
-        %footer{:data => {:role=>'footer'}} 
+        %footer{:data => {:role=>'footer', :theme=>'d'}} 
           - if @q
             %p=haml :_pagination      
           %center &copy; UK Parliament     
