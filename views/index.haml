@@ -6,7 +6,11 @@
         Hansard Search
       - else
         = @q + ' (Hansard Search)'
-    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    - if @request.user_agent =~ /iPhone|iPad/
+      %meta{:name=>"viewport", :content=>"width=device-width, initial-scale=1"}
+      %link{:rel=>"stylesheet", :href=>"http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css"}
+      %script{:type=>"text/javascript", :src=>"http://code.jquery.com/jquery-1.6.4.min.js"}
+      %script{:type=>"text/javascript", :src=>"http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"}
     %style
       body{width:40em;margin:4em auto;font-family:Helvetica,sans-serif}
       div.result{padding:0.9em 0}
@@ -27,13 +31,13 @@
       li.facet-inactive:hover{background-color:#eee;border-left:4pt solid #eee;}
       li.facet-active:hover{background-color:#eee;}
   %body
-    %header
+    %header{:data => {:role=>'header'}}
       %nav
         %a{:href=>"/"} HansardSearch
       %form
-        %input{:name => 'q', :value => @q, :placeholder=>"Search"}
+        %input{:name => 'q', :type => 'search', :value => @q, :placeholder=>"Search"}
         %button{:type=>'submit'} Search
-    %section
+    %section{:data => {:role=>'content'}}
       - if @q
         
         - if @section_filter
