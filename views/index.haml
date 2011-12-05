@@ -13,34 +13,37 @@
       %script
         $(document).bind("mobileinit", function(){$.mobile.touchOverflowEnabled = true;});
       %script{:type=>"text/javascript", :src=>"http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"}
-    - else
-      %style
-        body{width:40em;margin:4em auto;font-family:Helvetica,sans-serif}
-        div.result{padding:0.9em 0}
-        div.result big{display:block}
-        div.result span.breadcrumbs{display:block;color:green;padding-bottom:0.1em}
-        div.result span.breadcrumbs a{color:green;text-decoration:none}
-        div.result span.breadcrumbs a:hover{text-decoration:underline}
-        div.result span.text{line-height:1.25em}
-        div.result span.text em{font-weight:bold;font-style:normal}
-        div.result span.citation{font-size:0.9em;display:block;color:gray;padding:0.1em 0}
-        div.result span.contributors{font-size:0.9em;display:block;color:gray;padding:0.1em 0}
+    %style
+      body{width:40em;margin:4em auto;font-family:Helvetica,sans-serif}
+      div.result{padding:0.9em 0}
+      div.result big{display:block}
+      div.result span.breadcrumbs{display:block;color:green;padding-bottom:0.1em}
+      div.result span.breadcrumbs a{color:green;text-decoration:none}
+      div.result span.breadcrumbs a:hover{text-decoration:underline}
+      div.result span.text{line-height:1.25em}
+      div.result span.text em{font-weight:bold;font-style:normal}
+      div.result span.citation{font-size:0.9em;display:block;color:gray;padding:0.1em 0}
+      div.result span.contributors{font-size:0.9em;display:block;color:gray;padding:0.1em 0}
+      - if @request.user_agent =~ /iPhone|iPad/
+        nav{display:none}
+        form#search label {display:none}
+      - else
         nav{float:right}
-        ul#facets {padding-left:0}
-        ul#facets li{list-style-type:none;text-indent:0}
-        li.facet-active{border-left:4pt solid crimson;color:crimson;padding:0.5em 1em;}
-        li.facet-inactive{border-left:4pt solid #fff;text-decoration:none;color:#000;padding:0.5em 1em}
-        li.facet-inactive a{color:#000;text-decoration:none}
-        li.facet-inactive:hover{background-color:#eee;border-left:4pt solid #eee;}
-        li.facet-active:hover{background-color:#eee;}
+      ul#facets {padding-left:0}
+      ul#facets li{list-style-type:none;text-indent:0}
+      li.facet-active{border-left:4pt solid crimson;color:crimson;padding:0.5em 1em;}
+      li.facet-inactive{border-left:4pt solid #fff;text-decoration:none;color:#000;padding:0.5em 1em}
+      li.facet-inactive a{color:#000;text-decoration:none}
+      li.facet-inactive:hover{background-color:#eee;border-left:4pt solid #eee;}
+      li.facet-active:hover{background-color:#eee;}
   %body
     %div{:data => {:role=>'page', :theme=>'d'}}
       %header{:data => {:role=>'header', :theme=>'d'}}
         %nav
           %a{:href=>"/"} HansardSearch
-        %form{:action=>'/', :method=>'get'}
+        %form#search{:action=>'/', :method=>'get'}
           %div{:data => {:role=>'fieldcontain'}}
-            %label{:for=>"search"} Search Hansard
+            %label{:for=>"search"} Search
             %input{:name => 'q', :id => 'search', :type => 'search', :value => @q, :placeholder=>"Search"}
       %section{:data => {:role=>'content', :theme=>'d'}}
         - if @q
