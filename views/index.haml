@@ -6,7 +6,7 @@
         Hansard Search
       - else
         = @q + ' (Hansard Search)'
-    - if @request.user_agent =~ /iPhone|iPad/
+    - if @request.user_agent =~ /iPhone|iPad|BlackBerry/
       %meta{:name=>"viewport", :content=>"width=device-width, initial-scale=1"}
       %link{:rel=>"stylesheet", :href=>"http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css"}
       %script{:type=>"text/javascript", :src=>"http://code.jquery.com/jquery-1.6.4.min.js"}
@@ -24,11 +24,13 @@
       div.result span.text em{font-weight:bold;font-style:normal}
       div.result span.citation{font-size:0.9em;display:block;color:gray;padding:0.1em 0}
       div.result span.contributors{font-size:0.9em;display:block;color:gray;padding:0.1em 0}
-      - if @request.user_agent =~ /iPhone|iPad/
+      - if @request.user_agent =~ /iPhone|iPad|BlackBerry/
         nav{display:none}
         form#search label {display:none}
       - else
         nav{float:right}
+        a{text-decoration:none}
+        a:hover{text-decoration:underline}
       ul#facets {padding-left:0}
       ul#facets li{list-style-type:none;text-indent:0}
       li.facet-active{border-left:4pt solid crimson;color:crimson;padding:0.5em 1em;}
